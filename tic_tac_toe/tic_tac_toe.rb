@@ -25,24 +25,16 @@ class TicTacToeBoard
   end
 
   def test_game(character)
-    sequences = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 1, 2],
-                 [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]]
-    index = 0
-    winner_sequence = []
-    loop do
-      # obtains the character position for the winner sequence
+    sequences = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8], [2, 4, 6]]
+    found = false
+    sequences.each_with_index do |_serie, index|
       a = @board[sequences[index][0]]
       b = @board[sequences[index][1]]
       c = @board[sequences[index][2]]
-
-      if a == b && b == c && a == character
-        winner_sequence = sequences[index]
-        break
-      end
-      index += 1
-      break if index == 8
+      found = (a == b && b == c && c == character)
+      break if found
     end
-    winner_sequence
+    found
   end
 end
 
@@ -70,7 +62,7 @@ puts "Ready...player #{player02.name} (#{player02.character}).."
 
 iteration = 0
 gturn = iteration.even?
-game_test = []
+game_test = false
 current_player = gturn ? player01 : player02
 
 loop do
@@ -84,7 +76,7 @@ loop do
   game_test = board.test_game(current_player.character)
   board.print_board
 
-  break if iteration == 8 || !game_test.empty?
+  break if iteration == 8 || game_test
 
   # gturn, to swap turns
   iteration += 1
@@ -92,8 +84,9 @@ loop do
   current_player = gturn ? player01 : player02
 end
 
-if !game_test.empty?
+if game_test
   puts "Winner is #{current_player.name} ->#{current_player.character}"
 else
   puts 'Game was draw!'
 end
+board.print_board
