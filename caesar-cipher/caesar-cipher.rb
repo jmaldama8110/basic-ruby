@@ -50,5 +50,3 @@ user_string = gets.chomp
 offset_size = gets.chomp.to_i
 
 puts caesar_cipher(user_string, offset_size)
-
-
